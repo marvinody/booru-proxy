@@ -17,6 +17,7 @@ app.get('/:url', (req, res, next) => {
     responseType: 'stream'
   })
     .then(function (response) {
+      res.setHeader('cache-control', 'max-age=90019001')
       response.data.pipe(res)
     }).catch(err => {
       res.send(err)
