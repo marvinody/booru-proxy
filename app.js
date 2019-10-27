@@ -9,11 +9,22 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
-
+// file url
 app.get('/:url', (req, res, next) => {
+  const url = `https://danbooru.donmai.us/data/${req.params.url}`
+  proxy_booru(url, req, res, next)
+})
+// large file url
+app.get('/sample/:url', (req, res, next) => {
+  const url = `https://danbooru.donmai.us/data/sample/${req.params.url}`
+  proxy_booru(url, req, res, next)
+})
+
+const proxy_booru = (url, req, res, next) => {
+  // console.log('\t' + url)
   axios({
     method: 'get',
-    url: `https://danbooru.donmai.us/data/${req.params.url}`,
+    url,
     responseType: 'stream'
   })
     .then(function (response) {
@@ -22,7 +33,7 @@ app.get('/:url', (req, res, next) => {
     }).catch(err => {
       res.send(err)
     })
-})
+}
 
 const port = process.env.PORT || 7000
 app.listen(port, () => {
