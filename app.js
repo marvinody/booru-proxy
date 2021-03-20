@@ -9,14 +9,10 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
-// file url
-app.get('/:url', (req, res, next) => {
-  const url = `https://danbooru.donmai.us/data/${req.params.url}`
-  proxy_booru(url, req, res, next)
-})
-// large file url
-app.get('/sample/:url', (req, res, next) => {
-  const url = `https://danbooru.donmai.us/data/sample/${req.params.url}`
+
+app.get('/*', (req, res, next) => {
+  const wanted_url = req.params[0]
+  const url = `https://danbooru.donmai.us/data/${wanted_url}`
   proxy_booru(url, req, res, next)
 })
 
